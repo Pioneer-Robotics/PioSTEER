@@ -1,0 +1,5 @@
+# Remove Temp Files
+/.history
+
+.DS_Store
+_sandbox
