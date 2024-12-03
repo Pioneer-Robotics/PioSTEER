@@ -4,92 +4,35 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PioSTEER™</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        background-color: #f0f0f0;
-      }
-      #container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
-      canvas {
-        border: 1px solid black;
-        margin: 0;
-        display: block;
-        cursor: pointer;
-        background-color: #ffffff;
-      }
-      #controls {
-        margin-top: 20px;
-        width: 800px;
-      }
-      #controls button,
-      #controls input[type="number"],
-      #controls input[type="checkbox"],
-      #controls input[type="file"] {
-        margin: 5px;
-        padding: 10px;
-      }
-      #controls button {
-        background-color: #4caf50;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-      }
-      #controls button:hover {
-        background-color: #45a049;
-      }
-      #animateButton.running {
-        background-color: #f44336;
-      }
-      #animateButton.running:hover {
-        background-color: #f44336 !important;
-        opacity: 0.8;
-      }
-      #instructions {
-        margin-top: 10px;
-        font-size: 14px;
-      }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-      }
-      th,
-      td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: left;
-      }
-      th {
-        background-color: #f2f2f2;
-      }
-      input[type="number"] {
-        width: 60px;
-      }
-      #hermiteTangents {
-        margin-top: 10px;
-        display: none;
-      }
-      #hermiteTangents label {
-        margin-right: 10px;
-      }
-    </style>
-    <script type="module" src="/scripts/main.js" defer></script>
+
+    <!-- css define -->
+    <link rel="stylesheet" href="./scripts/css/styles.css">
+    <link rel="stylesheet" href="./scripts/css/base.css">
+    <link rel="stylesheet" href="./scripts/css/dark-mode.css">
+    <link rel="stylesheet" href="./scripts/css/components.css">
+    <link rel="stylesheet" href="./scripts/css/responsive.css">
+
+
+    <!-- js define -->
+    <script type="module" src="./scripts/js/main.js" defer></script>
+    <script type="module" src="./scripts/js/canvas.js"></script>
+    <script type="module" src="./scripts/js/spline.js"></script>
+    <script type="module" src="./scripts/js/cards.js"></script>
+    <script type="module" src="./scripts/js/robot.js"></script>
+
   </head>
   <body>
+
+    <label class="toggle-switch">
+      <span class="icon sun">☀️</span>
+      <input type="checkbox" id="darkModeToggle">
+      <span class="slider"></span>
+      <span class="icon moon">🌙</span>
+    </label>    
+
+
     <div id="container">
-      <h1>PioSTEER™</h1>
+      <h1 class="title">PioSTEER™</h1>
       <canvas id="canvas" width="800" height="800"></canvas>
       <div id="controls">
         <button id="clearButton">Clear Points</button>
@@ -99,55 +42,16 @@
         <button id="bezierButton">Plot Bezier Path</button>
         <button id="hermiteButton">Plot Hermite Path</button>
 
-        <div id="hermiteTangents" style="display: none; margin-top: 10px">
-          <div>Tangent 1:</div>
-          <label
-            >X <input type="number" id="hermiteTangent1X" value="100"
-          /></label>
-          <label
-            >Y <input type="number" id="hermiteTangent1Y" value="0"
-          /></label>
-          <div>Tangent 2:</div>
-          <label
-            >X <input type="number" id="hermiteTangent2X" value="100"
-          /></label>
-          <label
-            >Y <input type="number" id="hermiteTangent2Y" value="0"
-          /></label>
-        </div>
+        <input type="number" id="velocityInput" placeholder="Velocity (cm/s)" min="1" max="100" value="50">
 
-        <input
-          type="number"
-          id="velocityInput"
-          placeholder="Velocity (cm/s)"
-          min="1"
-          max="100"
-          value="10"
-        />
         <button id="animateButton">Animate Robot</button>
         <input type="checkbox" id="continuousPath" checked />
         <label for="continuousPath">Continuous Path</label>
         <div id="instructions"></div>
       </div>
-      <table id="pathTable">
-        <thead>
-          <tr>
-            <th>Type</th>
-            <th>Point 1 X</th>
-            <th>Point 1 Y</th>
-            <th>Point 2 X</th>
-            <th>Point 2 Y</th>
-            <th>Point 3 X</th>
-            <th>Point 3 Y</th>
-            <th>Point 4 X</th>
-            <th>Point 4 Y</th>
-            <th>Tangent 1</th>
-            <th>Tangent 2</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+
+      <div id="cardContainer" class="card-container"></div>
+
     </div>
   </body>
 </html>

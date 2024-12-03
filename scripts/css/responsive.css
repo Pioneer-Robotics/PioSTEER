@@ -1,0 +1,26 @@
+/* Responsive Design */
+@media (max-width: 768px) {
+    #pathInfo {
+        padding: 10px;
+    }
+
+    .path-card {
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+    .path-card button {
+        padding: 6px 12px;
+        font-size: 0.9em;
+    }
+}
+
+@media (max-width: 480px) {
+    .path-card h3 {
+        font-size: 1.2em;
+    }
+
+    .path-card {
+        padding: 8px;
+    }
+}

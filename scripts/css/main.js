@@ -92,6 +92,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
       controlPoints.push([x, y]);
       drawCanvas();
+      updateCards();
     }
 
     if (controlPoints.length === getRequiredPoints()) {
@@ -134,105 +135,6 @@ document.addEventListener("DOMContentLoaded", function () {
       type === "hermite" ? "block" : "none";
   }
 
-  function drawCanvas() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(fieldImage, 0, 0, canvas.width, canvas.height);
-
-    controlPoints.forEach(([x, y], index) => {
-      ctx.fillStyle = index === draggedPointIndex ? "blue" : "red";
-      ctx.fillRect(
-        (x / imgWidth) * canvas.width - 4,
-        (y / imgHeight) * canvas.height - 4,
-        8,
-        8,
-      );
-    });
-
-    splinePaths.forEach((path) => {
-      ctx.beginPath();
-      ctx.moveTo(...scaleToCanvas(path[0]));
-      for (let i = 1; i < path.length; i++) {
-        ctx.lineTo(...scaleToCanvas(path[i]));
-      }
-      ctx.strokeStyle = "blue";
-      ctx.lineWidth = 3;
-      ctx.stroke();
-    });
-  }
-
-  function scaleToCanvas([x, y]) {
-    return [(x / imgWidth) * canvas.width, (y / imgHeight) * canvas.height];
-  }
-
-  function generateSpline() {
-    let path;
-    if (selectedSpline === "linear") path = linearSpline();
-    else if (selectedSpline === "bezier") path = bezierSpline();
-    else if (selectedSpline === "hermite") path = hermiteSpline();
-
-    if (
-      splinePaths.length > 0 &&
-      document.getElementById("continuousPath").checked
-    ) {
-      path = path.slice(1); // Remove the first point as it's the same as the last point of the previous path
-    }
-    splinePaths.push(path);
-    drawCanvas();
-    updateTable();
-  }
-
-  function linearSpline() {
-    const [p1, p2] = controlPoints.slice(-2);
-    const points = [];
-    for (let t = 0; t <= 1; t += 0.01) {
-      const x = p1[0] + t * (p2[0] - p1[0]);
-      const y = p1[1] + t * (p2[1] - p1[1]);
-      points.push([x, y]);
-    }
-    return points;
-  }
-
-  function bezierSpline() {
-    const [p0, p1, p2, p3] = controlPoints.slice(-4);
-    const points = [];
-    for (let t = 0; t <= 1; t += 0.01) {
-      const x =
-        Math.pow(1 - t, 3) * p0[0] +
-        3 * Math.pow(1 - t, 2) * t * p1[0] +
-        3 * (1 - t) * Math.pow(t, 2) * p2[0] +
-        Math.pow(t, 3) * p3[0];
-      const y =
-        Math.pow(1 - t, 3) * p0[1] +
-        3 * Math.pow(1 - t, 2) * t * p1[1] +
-        3 * (1 - t) * Math.pow(t, 2) * p2[1] +
-        Math.pow(t, 3) * p3[1];
-      points.push([x, y]);
-    }
-    return points;
-  }
-
-  function hermiteSpline() {
-    const [p0, p1] = controlPoints.slice(-2);
-    const t0 = [
-      document.getElementById("hermiteTangent1X").value,
-      document.getElementById("hermiteTangent1Y").value,
-    ];
-    const t1 = [
-      document.getElementById("hermiteTangent2X").value,
-      document.getElementById("hermiteTangent2Y").value,
-    ];
-    const points = [];
-    for (let t = 0; t <= 1; t += 0.01) {
-      const h00 = 2 * t ** 3 - 3 * t ** 2 + 1;
-      const h10 = t ** 3 - 2 * t ** 2 + t;
-      const h01 = -2 * t ** 3 + 3 * t ** 2;
-      const h11 = t ** 3 - t ** 2;
-      const x = h00 * p0[0] + h10 * t0[0] + h01 * p1[0] + h11 * t1[0];
-      const y = h00 * p0[1] + h10 * t0[1] + h01 * p1[1] + h11 * t1[1];
-      points.push([x, y]);
-    }
-    return points;
-  }
 
   function updateTable() {
     const tableBody = document.querySelector("#pathTable tbody");
@@ -287,52 +189,6 @@ document.addEventListener("DOMContentLoaded", function () {
     splinePaths.splice(row.rowIndex - 1, 1);
     row.parentNode.removeChild(row);
     drawCanvas();
-  }
-
-  function animateRobot() {
-    const animateButton = document.getElementById("animateButton");
-    if (isAnimating) {
-      clearInterval(robotInterval);
-      isAnimating = false;
-      animateButton.textContent = "Animate Robot";
-      animateButton.classList.remove("running");
-    } else {
-      isAnimating = true;
-      animateButton.textContent = "Stop Robot";
-      animateButton.classList.add("running");
-      robotIndex = 0;
-      let velocity =
-        parseFloat(document.getElementById("velocityInput").value) || 10;
-      velocity *= 2;
-      if (splinePaths.length === 0) return;
-
-      let currentPathIndex = 0,
-        currentPath = splinePaths[currentPathIndex];
-      robotInterval = setInterval(() => {
-        if (robotIndex >= currentPath.length) {
-          currentPathIndex++;
-          if (currentPathIndex >= splinePaths.length) {
-            currentPathIndex = 0;
-          }
-          currentPath = splinePaths[currentPathIndex];
-          robotIndex = 0;
-        }
-        drawCanvas();
-        drawRobot(currentPath[robotIndex]);
-        robotIndex++;
-      }, 1000 / velocity);
-    }
-  }
-
-  function drawRobot([x, y]) {
-    ctx.strokeStyle = "green";
-    ctx.lineWidth = 2;
-    ctx.strokeRect(
-      (x / imgWidth) * canvas.width - robotSize / 2,
-      (y / imgHeight) * canvas.height - robotSize / 2,
-      robotSize,
-      robotSize,
-    );
   }
 
   function clearPoints() {
@@ -405,6 +261,29 @@ document.addEventListener("DOMContentLoaded", function () {
         '<button onclick="deletePath(this)">Delete</button>';
     });
   }
+
+
+
+  const toggle = document.getElementById("darkModeToggle");
+  
+    // Check localStorage for saved mode
+    if (localStorage.getItem("dark-mode") === "enabled") {
+      document.body.classList.add("dark-mode");
+      toggle.checked = true;
+    }
+  
+    // Add event listener for the toggle
+    toggle.addEventListener("change", () => {
+      if (toggle.checked) {
+        document.body.classList.add("dark-mode");
+        localStorage.setItem("dark-mode", "enabled");
+      } else {
+        document.body.classList.remove("dark-mode");
+        localStorage.setItem("dark-mode", "disabled");
+      }
+    })
+
+  
 
   // Make functions available globally
   window.updatePoint = updatePoint;

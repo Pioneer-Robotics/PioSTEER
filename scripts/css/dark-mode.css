@@ -1,0 +1,14 @@
+/* Dark Mode Styles */
+body.dark-mode {
+    background-color: black;
+    color: white;
+}
+
+/* Dark mode icon color changes */
+body.dark-mode .icon.sun {
+    color: #e67e22; /* Dim sun color */
+}
+
+body.dark-mode .icon.moon {
+    color: #ecf0f1; /* Bright moon color */
+}
