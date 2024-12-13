@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let isAnimating = false;
 
   const fieldImage = new Image();
-  fieldImage.src = "static/IntoTheDeepField.png";
+  fieldImage.src = "/PioSTEER/static/IntoTheDeepField.png";
   fieldImage.onload = () => drawCanvas();
 
   const requiredPoints = {
