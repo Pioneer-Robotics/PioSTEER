@@ -10,21 +10,17 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: white;
-    color: black;
+    background-color: #002863;
+    color: rgb(255, 255, 255);
     transition: background-color 0.3s, color 0.3s;
 }
 
 
 .title {
     font-family: "PioneerFont", sans-serif;
+    color:#FF0000;
+    font-size: 40px;
 }
-
-/* Dark Mode Styles */
-body.dark-mode {
-    background-color: black;
-    color: white;
-  }
 
 #container {
     display: flex;
@@ -101,105 +97,3 @@ button {
 .path-card button:hover {
     background-color: #d32f2f; /* Darker shade when hovering */
 }
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    #pathInfo {
-        padding: 10px; /* Reduce padding on smaller screens */
-    }
-
-    .path-card {
-        padding: 10px; /* Reduce padding inside the cards */
-        margin-bottom: 10px; /* Reduce bottom margin */
-    }
-
-    .path-card button {
-        padding: 6px 12px; /* Smaller button for smaller screens */
-        font-size: 0.9em; /* Smaller font size for better fit */
-    }
-}
-
-@media (max-width: 480px) {
-    .path-card h3 {
-        font-size: 1.2em; /* Adjust font size for very small screens */
-    }
-
-    .path-card {
-        padding: 8px; /* Further reduce padding */
-    }
-}
-
-
-/* Position toggle in the top-left corner */
-.toggle-switch {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    display: flex;
-    align-items: center;
-    gap: 8px; /* Space between icons and slider */
-    z-index: 1000;
-  }
-/* Dark mode styles */
-body.dark-mode {
-    background-color: black;
-    color: white;
-    }
-  
-  /* Adjust icon size */
-.toggle-switch .icon {
-    font-size: 18px;
-    color: #f39c12; /* Default sun color */
-    transition: color 0.3s;
-  }
-  
-.toggle-switch .icon.moon {
-    color: #3498db; /* Default moon color */
-  }
-  
-  /* Base styles for the switch */
-.toggle-switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
-  
-  .slider {
-    position: relative;
-    width: 50px;
-    height: 25px;
-    background-color: #ccc;
-    border-radius: 25px;
-    cursor: pointer;
-    transition: background-color 0.4s;
-  }
-  
-  .slider:before {
-    position: absolute;
-    content: "";
-    height: 19px;
-    width: 19px;
-    left: 3px;
-    bottom: 3px;
-    background-color: white;
-    border-radius: 50%;
-    transition: transform 0.4s;
-  }
-  
-  input:checked + .slider {
-    background-color: #4caf50;
-  }
-  
-  input:checked + .slider:before {
-    transform: translateX(25px);
-  }
-  
-  /* Change icon colors in dark mode */
-  body.dark-mode .icon.sun {
-    color: #e67e22; /* Dim sun color */
-  }
-  
-  body.dark-mode .icon.moon {
-    color: #ecf0f1; /* Bright moon color */
-  }
-  
