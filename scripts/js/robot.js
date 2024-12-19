@@ -1,4 +1,4 @@
-function animateRobot() {
+export function animateRobot() {
     const animateButton = document.getElementById("animateButton");
     if (isAnimating) {
       clearInterval(robotInterval);
@@ -33,9 +33,9 @@ function animateRobot() {
     }
   }
 
-  function drawRobot([x, y]) {
+export function drawRobot([x, y]) {
     ctx.strokeStyle = "green";
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 4;
     ctx.strokeRect(
       (x / imgWidth) * canvas.width - robotSize / 2,
       (y / imgHeight) * canvas.height - robotSize / 2,

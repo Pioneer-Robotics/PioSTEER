@@ -1,4 +1,4 @@
-function updateCards() {
+export function updateCards() {
     const cardContainer = document.getElementById("cardContainer"); // A div to hold the cards
     cardContainer.innerHTML = ""; // Clear existing cards
   
@@ -50,7 +50,7 @@ function updateCards() {
     });
   }
   
-  function deletePath(index) {
+export function deletePath(index) {
     // Remove the path and its associated card
     window.splinePaths.splice(index, 1);
     updateCards();
